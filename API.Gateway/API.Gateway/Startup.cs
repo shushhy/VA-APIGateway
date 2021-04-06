@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace API.Gateway
 {
@@ -32,8 +33,14 @@ namespace API.Gateway
             // Swagger Service
             services.AddSwaggerGen();
 
+            /*
+            var authKey = "TesteKey";
+            services.AddAuthentication()
+                .AddJwtBearer(authKey, x => { });
+            */
+
             // Ocelot Service
-            services.AddOcelot(Configuration);
+            services.AddOcelot();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
