@@ -57,6 +57,19 @@
             ],
             "UpstreamPathTemplate": "/gateway/product{id}",
             "UpstreamHttpMethod": [ "GET", "DELETE" ]
+        },
+        // joke
+        {
+            "DownstreamPathTemplate": "/api/v3/avgPrice?symbol={symbol}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "api.binance.com",
+                    "Port": "443"
+                }
+            ],
+            "UpstreamPathTemplate": "/gateway/crypto/{symbol}",
+            "UpstreamHttpMethod": [ "GET" ]
         }
     ],
     "GlobalConfiguration": {
