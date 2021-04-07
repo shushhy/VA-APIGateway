@@ -103,6 +103,44 @@
         "DurationOfBreak": 1000,
         "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
       }
+    },
+
+    // STEAM - GET LAST CS:GO UPDATE
+    {
+      "DownstreamPathTemplate": "/ISteamNews/GetNewsForApp/v0002/?appid=730&count=1&maxlength=300",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "api.steampowered.com",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/steam",
+      "UpstreamHttpMethod": [ "GET" ],
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 1,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
+      }
+    },
+
+    // SPOTIFY - GET DREAM THEATER'S PROFILE
+    {
+      "DownstreamPathTemplate": "/v1/artists/2aaLAng2L2aWD2FClzwiep",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "api.spotify.com",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/spotify",
+      "UpstreamHttpMethod": [ "GET" ],
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 1,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
+      }
     }
   ],
     "GlobalConfiguration": {
