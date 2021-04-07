@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
+using Ocelot.Provider.Polly;
 
 namespace API.Gateway
 {
@@ -40,11 +41,12 @@ namespace API.Gateway
             */
 
             // Ocelot Service
-            services.AddOcelot();
+            //services.AddOcelot();
+            services.AddOcelot().AddPolly();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Use Swagger
             app.UseSwagger();
@@ -70,7 +72,7 @@ namespace API.Gateway
             });
 
             // Use Ocelot
-            await app.UseOcelot();
+            app.UseOcelot();
         }
     }
 }
