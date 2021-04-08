@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
 using Ocelot.Provider.Polly;
+using Ocelot.Cache.CacheManager;
 
 namespace API.Gateway
 {
@@ -34,15 +35,15 @@ namespace API.Gateway
             // Swagger Service
             services.AddSwaggerGen();
 
-            /*
-            var authKey = "TesteKey";
-            services.AddAuthentication()
-                .AddJwtBearer(authKey, x => { });
-            */
-
             // Ocelot Service
-            //services.AddOcelot();
-            services.AddOcelot().AddPolly();
+            services.AddOcelot()
+                .AddPolly()
+                .AddCacheManager(x =>
+            {
+                x.WithDictionaryHandle();
+            });
+            // still testing
+            services.AddAuthentication();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,7 +73,7 @@ namespace API.Gateway
             });
 
             // Use Ocelot
-            app.UseOcelot();
+            app.UseOcelot().Wait();
         }
     }
 }
