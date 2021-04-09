@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 using Serilog;
 using Ocelot.Provider.Polly;
 using Ocelot.Cache.CacheManager;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Gateway.Services.Services;
 
 namespace API.Gateway
 {
@@ -27,26 +31,39 @@ namespace API.Gateway
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
 
+            var key = "ThisIsTheVaApiGatewayKeyToGenerateBearerTokens";
+            services.AddSingleton<IJwtAuthenticationManager>(new JwtAuthenticationManager(key));
+
             // Swagger Service
             services.AddSwaggerGen();
 
+            // Authentication Service
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x => {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             // Ocelot Service
             services.AddOcelot()
-                .AddPolly()
-                .AddCacheManager(x =>
-            {
-                x.WithDictionaryHandle();
-            });
-            // still testing
-            services.AddAuthentication();
+                    .AddPolly()
+                    .AddCacheManager(settings => settings.WithDictionaryHandle());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Use Swagger
@@ -65,6 +82,10 @@ namespace API.Gateway
 
             app.UseRouting();
 
+            // Use Authentication
+            app.UseAuthentication();
+
+            // Use Authorization
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

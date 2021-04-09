@@ -12,6 +12,7 @@
             ],
             "UpstreamPathTemplate": "/gateway/customer",
             "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+            // Rate Limiting
             "RateLimitOptions": {
                 "ClientWhiteList": [],
                 "EnableRateLimiting": true,
@@ -19,14 +20,17 @@
                 "PeriodTimespan": 1,
                 "Limit": 1
             },
+            // Load Balancer
             "LoadBalancerOptions": {
                 "Type": "LeastConnection"
             },
+            // Polly QoS
             "QoSOptions": {
                 "ExceptionsAllowedBeforeBreaking": 1,
                 "DurationOfBreak": 1000,
-                "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
+                "TimeoutValue": 500
             },
+            // Cache
             "FileCacheOptions": {
                 "TtlSeconds": 60
             }
@@ -44,10 +48,11 @@
             ],
             "UpstreamPathTemplate": "/gateway/customer/{id}",
             "UpstreamHttpMethod": [ "GET", "DELETE" ],
+            // Polly QoS
             "QoSOptions": {
                 "ExceptionsAllowedBeforeBreaking": 1,
                 "DurationOfBreak": 1000,
-                "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
+                "TimeoutValue": 500
             }
         },
 
@@ -63,11 +68,19 @@
             ],
             "UpstreamPathTemplate": "/gateway/product",
             "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+            // Authentication
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            },
+            // Polly QoS
             "QoSOptions": {
                 "ExceptionsAllowedBeforeBreaking": 1,
                 "DurationOfBreak": 1000,
-                "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
-            }
+                "TimeoutValue": 500
+            },
+            // Cache
+            "FileCacheOptions":  { "TtlSeconds":  30 }
         },
 
         // PRODUCT-ID
@@ -82,10 +95,11 @@
             ],
             "UpstreamPathTemplate": "/gateway/product/{id}",
             "UpstreamHttpMethod": [ "GET", "DELETE" ],
+            // Polly QoS
             "QoSOptions": {
                 "ExceptionsAllowedBeforeBreaking": 1,
                 "DurationOfBreak": 1000,
-                "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
+                "TimeoutValue": 500
             }
         },
 
@@ -101,10 +115,11 @@
             ],
             "UpstreamPathTemplate": "/gateway/crypto/{symbol}",
             "UpstreamHttpMethod": [ "GET" ],
+            // Polly QoS
             "QoSOptions": {
                 "ExceptionsAllowedBeforeBreaking": 1,
                 "DurationOfBreak": 1000,
-                "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
+                "TimeoutValue": 500
             }
         },
 
@@ -120,10 +135,11 @@
             ],
             "UpstreamPathTemplate": "/gateway/steam",
             "UpstreamHttpMethod": [ "GET" ],
+            // Polly QoS
             "QoSOptions": {
                 "ExceptionsAllowedBeforeBreaking": 1,
                 "DurationOfBreak": 1000,
-                "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
+                "TimeoutValue": 500
             }
         },
 
@@ -139,10 +155,11 @@
             ],
             "UpstreamPathTemplate": "/gateway/spotify",
             "UpstreamHttpMethod": [ "GET" ],
+            // Polly QoS
             "QoSOptions": {
                 "ExceptionsAllowedBeforeBreaking": 1,
                 "DurationOfBreak": 1000,
-                "TimeoutValue": 500 // This value specifies that a request will automatically be timed out if it takes more than this value
+                "TimeoutValue": 500
             }
         }
     ],
