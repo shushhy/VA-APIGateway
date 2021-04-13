@@ -80,7 +80,7 @@
                 "TimeoutValue": 500
             },
             // Cache
-            "FileCacheOptions":  { "TtlSeconds":  30 }
+            "FileCacheOptions": { "TtlSeconds": 30 }
         },
 
         // PRODUCT-ID
